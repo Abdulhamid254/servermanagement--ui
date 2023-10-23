@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, catchError, map, of, startWith } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of, startWith } from 'rxjs';
 import { AppState } from './interface/app-state';
 import { CustomResponse } from './interface/custom-response';
 import { ServerService } from './service/server.service';
 import { DataState } from './enum/data.state.enum';
+import { Status } from './enum/status.enum';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,11 @@ import { DataState } from './enum/data.state.enum';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  appState$: Observable<AppState<CustomResponse>> | undefined
+  appState$: Observable<AppState<CustomResponse>> | undefined;
+  readonly DataState = DataState;
+  readonly Status = Status;
+  private filterSubject = new BehaviorSubject<string>('');
+  filterStatus$ = this.filterSubject.asObservable();
 
   constructor( private serverService: ServerService){}
 
