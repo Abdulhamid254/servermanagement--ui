@@ -17,7 +17,7 @@ export class ServerService {
 
 private handleError(error: HttpErrorResponse): Observable<never>{
   console.log(error);
-  return throwError ("Method not implemented .")
+  return throwError("Method not implemented .")
 
 }
 
@@ -50,17 +50,21 @@ private handleError(error: HttpErrorResponse): Observable<never>{
         // filtering happening here
 
     filter$ = (status: Status, response: CustomResponse) => <Observable<CustomResponse>>
+    // we wnat to make it return a new Observable....we can also use switchmap to transform to th eobservable we want
         new Observable<CustomResponse>(
           suscriber => {
             console.log(response);
             suscriber.next(
+              // we want to overwrite only the message
               status === Status.ALL ? { ...response, message: `Servers filtered by ${status} status` } :
                 {
                   ...response,
+
                   message: response.data.servers!
                     .filter(server => server.status === status).length > 0 ? `Servers filtered by
               ${status === Status.SERVER_UP ? 'SERVER UP'
                     : 'SERVER DOWN'} status` : `No servers of ${status} found`,
+                    //overwriting data
                   data: {
                     servers: response.data.servers!
                       .filter(server => server.status === status)
