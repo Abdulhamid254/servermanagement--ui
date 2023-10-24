@@ -7,6 +7,7 @@ import { DataState } from './enum/data.state.enum';
 import { Status } from './enum/status.enum';
 import { NgForm } from '@angular/forms';
 import { Server } from './interface/server';
+import { NotificationService } from './service/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +24,7 @@ export class AppComponent implements OnInit{
   private isLoading = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoading.asObservable();
 
-  constructor( private serverService: ServerService){}
+  constructor( private serverService: ServerService, private notifier: NotificationService){}
 
   ngOnInit(): void {
     this.appState$ = this.serverService.servers$.pipe(
